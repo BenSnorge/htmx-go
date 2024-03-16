@@ -1,0 +1,66 @@
+{{ block "index" . }}
+<DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <script src="https://unpkg.com/htmx.org@1.9.10"
+            integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC"
+            crossorigin="anonymous"></script>
+    </head>
+
+    <body>
+        {{ template "form" .Form }}
+        <hr />
+        {{ template "display" .Data }}
+        <script>
+            document.addEventListener("DOMContentLoaded", (event) => {
+                document.body.addEventListener('htmx:beforeSwap', function (evt) {
+                    if (evt.detail.xhr.status === 422) {
+                        evt.detail.shouldSwap = true;
+                        evt.detail.isError = false;
+                    }
+                });
+            })
+        </script>
+    </body>
+
+    </html>
+    {{end}}
+    {{ block "form". }}
+    <form hx-swap="outerHTML" hx-post="/contacts">
+        name: <input {{if .Values.name}} value="{{ .Values.name }}" {{end}} type="text" name="name" />
+
+        email: <input {{if .Values.email}} value="{{ .Values.email }}" {{end}} type="text" name="email" />
+        {{if .Errors.email}}
+        <div style="color: red;">{{ .Errors.email}}</div>
+        {{end}}
+        <button type="submit">Create Contact</button>
+    </form>
+    {{end}}
+
+
+    {{ block "display". }}
+    <div id="contacts" style="display: flex; flex-direction: column">
+        {{range .Contacts}}
+        {{ template "contact" . }}
+        {{end}}
+    </div>
+    {{end}}
+
+    {{ block "contact" . }}
+    <div>
+        Name: <span>{{ .Name}}</span>
+        Email: <span>{{ .Email}}</span>
+    </div>
+
+    {{ end }}
+
+    {{ block "oob-contact" . }}
+    <div id="contacts" hx-swap-oob="afterbegin">
+        {{ template "contact" . }}
+    </div>
+
+    {{ end }}
