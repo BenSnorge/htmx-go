@@ -8,4 +8,8 @@
 .htmx-request.htmx-indicator{
     opacity:1
 }
+.contact.htmx-swapping {
+    opacity:0;
+    transistion: opacity 500ms ease-in;
+}
 

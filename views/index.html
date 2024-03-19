@@ -52,8 +52,8 @@
     {{end}}
 
     {{ block "contact" . }}
-    <div id="contact-{{ .Id }}" style="display: flex;">
-        <div hx-indicator="#ci-{{ .Id }}" hx-target="#contact-{{ .Id }}" hx-swap="outerHTML"
+    <div class="contact" id="contact-{{ .Id }}" style="display: flex;">
+        <div hx-indicator="#ci-{{ .Id }}" hx-target="#contact-{{ .Id }}" hx-swap="outerHTML swap:500ms"
             hx-delete="/contacts/{{ .Id }}" style="width: 1rem; cursor: pointer;">
             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24">
                 <path
